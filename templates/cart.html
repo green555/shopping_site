@@ -12,19 +12,21 @@
             </tr>
         </thead>
         <tbody>
-            {% for melon in display_melon %}      
+            {% for melon in melon_list %}      
         
             <tr>
                 <td>{{ melon.melon_id }}</td>
-                <td>{{ session.get(melon.melon_id, 0) }}</td>
-                <td>{{ melon.melon.price }}</td>
-                <!-- <td>{{ melon.melon.</td> -->
+                <td>{{ melon.quantity }}</td>
+                <td>{{ melon.price }}</td>
+                <td>{{ melon.sub_total }}</td>
+               
             </tr>
-       
+            
+            {% endfor %}
         </tbody>
     </table>
 
-    <h3>Total: $27.00</h3>
+    <h3>Total: {{ total_cost }}</h3>
 
     <a href="/checkout" class="btn btn-large btn-primary">Check Out</a>
 

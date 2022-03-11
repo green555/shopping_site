@@ -9,6 +9,7 @@ It reads melon data in from a text file.
 
 class Melon:
     """An Ubermelon Melon type."""
+    
 
     def __init__(
         self,
@@ -27,6 +28,8 @@ class Melon:
         self.image_url = image_url
         self.color = color
         self.seedless = seedless
+        # self.quantity = 0
+        # self.sub_total = self.quantity * self.price
 
     def price_str(self):
         """Return price formatted as string $x.xx"""

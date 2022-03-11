@@ -60,7 +60,20 @@ def show_melon(melon_id):
 @app.route("/cart")
 def show_shopping_cart():
     """Display content of shopping cart."""
+    melons_in_cart = []
+    total_cost = 0
+    
+    if 'cart' in session:
 
+        melon_ids = session['cart'].keys()        
+        
+        for id in melon_ids:
+            melon = melons.get_by_id(id)
+            melon.quantity = session['cart'][id]
+            melon.sub_total = melon.quantity * melon.price
+            total_cost += melon.sub_total
+            melons_in_cart.append(melon)
+    
     # TODO: Display the contents of the shopping cart.
 
     # The logic here will be something like:
@@ -79,7 +92,7 @@ def show_shopping_cart():
     # Make sure your function can also handle the case wherein no cart has
     # been added to the session
 
-    return render_template("cart.html")
+    return render_template("cart.html", melon_list = melons_in_cart, total_cost = total_cost)
 
 
 
@@ -90,23 +103,28 @@ def add_to_cart(melon_id):
     When a melon is added to the cart, redirect browser to the shopping cart
     page and display a confirmation message: 'Melon successfully added to
     cart'."""
-    if melon_id in session:
-        session[melon_id] += 1   
+    if 'cart' in session:
+        session['cart'][melon_id] = session['cart'].get(melon_id, 0) + 1
+    else:
+        session['cart'] = {}
+        session['cart'][melon_id] = 1
     
-    session.modified = True
-    display_melon = melons.melon_types[melon_id]
+    # session[melon_id] = session.get(melon_id, 0) + 1
+    flash("successfully added to cart!")
+   
+    
     # TODO: Finish shopping cart functionality
 
     # The logic here should be something like:
     #
     # - check if a "cart" exists in the session, and create one (an empty
     #   dictionary keyed to the string "cart") if not
-    # - check if the desired melon id is the cart, and if not, put it in
+    # - check if the desired melon id is in the cart, and if not, put it in
     # - increment the count for that melon id by 1
     # - flash a success message
     # - redirect the user to the cart page
 
-    return render_template("cart.html", display_melon = display_melon)
+    return redirect("/cart")
 
 
 @app.route("/login", methods=["GET"])
